@@ -1,0 +1,23 @@
+<input id="url">
+<button onclick="send()">send</button>
+
+<div id="q"></div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+const socket = io("https://YOUR-RENDER.onrender.com");
+
+const id = crypto.randomUUID();
+
+socket.on("update", (d) => {
+  document.getElementById("q").innerHTML =
+    d.queue.map(x => `<div>${x.url}</div>`).join("");
+});
+
+function send(){
+  socket.emit("add", {
+    id: crypto.randomUUID(),
+    url: document.getElementById("url").value
+  });
+}
+</script>
