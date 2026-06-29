@@ -1,0 +1,25 @@
+<button onclick="skip()">SKIP</button>
+<div id="q"></div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+const socket = io("https://YOUR-RENDER.onrender.com");
+
+socket.on("update", (d) => {
+  document.getElementById("q").innerHTML =
+    d.queue.map(x => `
+      <div>
+        ${x.url}
+        <button onclick="remove('${x.id}')">X</button>
+      </div>
+    `).join("");
+});
+
+function remove(id){
+  socket.emit("remove", id);
+}
+
+function skip(){
+  socket.emit("skip");
+}
+</script>
